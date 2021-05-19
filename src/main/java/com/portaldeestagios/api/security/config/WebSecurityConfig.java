@@ -1,8 +1,10 @@
 package com.portaldeestagios.api.security.config;
 
+import com.portaldeestagios.api.security.jwt.JwtConfig;
+import com.portaldeestagios.api.security.jwt.JwtTokenVerifier;
+import com.portaldeestagios.api.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.portaldeestagios.api.user.ApplicationUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -17,6 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.crypto.SecretKey;
 import java.util.Arrays;
 
 @Configuration
@@ -26,6 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final ApplicationUserService applicationUserService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final SecretKey secretKey;
+  private final JwtConfig jwtConfig;
   private final Environment env;
 
   @Override
@@ -37,9 +42,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    http.cors().and().csrf().disable();
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    http.authorizeRequests().anyRequest().permitAll();
+    http
+            .csrf().disable()
+            .sessionManagement()
+              .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
+            .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)
+            .authorizeRequests()
+            .anyRequest().permitAll();
   }
 
   @Override
@@ -55,13 +66,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return provider;
   }
 
-  @Bean
-  CorsConfigurationSource corsConfigurationSource(){
-    CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-    configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
-    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-
-    return source;
-  }
+//  @Bean
+//  CorsConfigurationSource corsConfigurationSource(){
+//    CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+//    configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
+//    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//    source.registerCorsConfiguration("/**", configuration);
+//
+//    return source;
+//  }
 }

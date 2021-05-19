@@ -11,6 +11,7 @@ import java.util.Collections;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class ApplicationUser implements UserDetails {
   @Id
@@ -22,10 +23,11 @@ public class ApplicationUser implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private ApplicationUserRole applicationUserRole;
-  private Boolean isLocked = false;
-  private Boolean isEnabled = false;
-  private Boolean isAccountNonExpired = true;
-  private Boolean isAccountNonLocked = true;
+
+  private boolean isAccountNonExpired = true;
+  private boolean isAccountNonLocked = true;
+  private boolean isCredentialsNonExpired = true;
+  private boolean isEnabled = true;
 
   public ApplicationUser(String email, String password, ApplicationUserRole appUserRole) {
 
@@ -40,6 +42,10 @@ public class ApplicationUser implements UserDetails {
     return Collections.singletonList(authority);
   }
 
+  public Long getId() {
+    return id;
+  }
+
   @Override
   public String getUsername() {
     return email;
@@ -47,17 +53,17 @@ public class ApplicationUser implements UserDetails {
 
   @Override
   public boolean isAccountNonExpired() {
-    return !isAccountNonExpired;
+    return isAccountNonExpired;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    return !isLocked;
+    return isAccountNonLocked;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return !isAccountNonExpired;
+    return isCredentialsNonExpired;
   }
 
   @Override
