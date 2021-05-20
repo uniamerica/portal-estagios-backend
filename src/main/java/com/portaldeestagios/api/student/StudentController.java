@@ -23,6 +23,7 @@ public class StudentController {
   private final ModelMapper modelMapper;
 
   @GetMapping
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<List<StudentModel>> findAll() {
     List<StudentModel> list = toCollectionModel(repository.findAll());
     return ResponseEntity.ok(list);

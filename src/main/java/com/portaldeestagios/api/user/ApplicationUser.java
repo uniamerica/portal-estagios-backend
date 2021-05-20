@@ -1,6 +1,7 @@
 package com.portaldeestagios.api.user;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,10 +9,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 public class ApplicationUser implements UserDetails {
   @Id
@@ -20,25 +24,28 @@ public class ApplicationUser implements UserDetails {
   private String email;
   private String password;
 
-
-  @Enumerated(EnumType.STRING)
+  @Enumerated
   private ApplicationUserRole applicationUserRole;
+
   private boolean isAccountNonExpired = true;
   private boolean isAccountNonLocked = true;
   private boolean isCredentialsNonExpired = true;
   private boolean isEnabled = true;
 
-  public ApplicationUser(String email, String password, ApplicationUserRole appUserRole) {
-
+  public ApplicationUser(String email, String password, ApplicationUserRole applicationUserRole) {
     this.email = email;
     this.password = password;
-    this.applicationUserRole = appUserRole;
+    this.applicationUserRole = applicationUserRole;
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     SimpleGrantedAuthority authority = new SimpleGrantedAuthority(applicationUserRole.name());
     return Collections.singletonList(authority);
+  }
+
+  public Long getId() {
+    return id;
   }
 
   @Override
@@ -48,17 +55,17 @@ public class ApplicationUser implements UserDetails {
 
   @Override
   public boolean isAccountNonExpired() {
-    return !isAccountNonExpired;
+    return isAccountNonExpired;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    return !isAccountNonLocked;
+    return isAccountNonLocked;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return !isAccountNonExpired;
+    return isCredentialsNonExpired;
   }
 
   @Override

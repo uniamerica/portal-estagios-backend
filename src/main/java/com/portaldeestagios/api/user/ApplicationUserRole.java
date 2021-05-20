@@ -1,9 +1,9 @@
 package com.portaldeestagios.api.user;
 
 public enum ApplicationUserRole {
-  ADMIN,
-  STUDENT,
-  COMPANY,
-  EDUCATIONAL_INSTITUTION
+  ROLE_ADMIN,
+  ROLE_STUDENT,
+  ROLE_COMPANY,
+  ROLE_EDUCATIONAL_INSTITUTION
 }
 
