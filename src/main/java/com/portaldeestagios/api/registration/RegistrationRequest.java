@@ -4,7 +4,7 @@ import lombok.*;
 
 @AllArgsConstructor
 @Data
-public class RegistrationDTO {
+public class RegistrationRequest {
   private final String password;
   private final String email;
 }

@@ -23,7 +23,6 @@ public class ApplicationUser implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private ApplicationUserRole applicationUserRole;
-
   private boolean isAccountNonExpired = true;
   private boolean isAccountNonLocked = true;
   private boolean isCredentialsNonExpired = true;
@@ -42,10 +41,6 @@ public class ApplicationUser implements UserDetails {
     return Collections.singletonList(authority);
   }
 
-  public Long getId() {
-    return id;
-  }
-
   @Override
   public String getUsername() {
     return email;
@@ -53,17 +48,17 @@ public class ApplicationUser implements UserDetails {
 
   @Override
   public boolean isAccountNonExpired() {
-    return isAccountNonExpired;
+    return !isAccountNonExpired;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    return isAccountNonLocked;
+    return !isAccountNonLocked;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return isCredentialsNonExpired;
+    return !isAccountNonExpired;
   }
 
   @Override

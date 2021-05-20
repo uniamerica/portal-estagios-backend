@@ -6,9 +6,6 @@ import com.portaldeestagios.api.user.ApplicationUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-
 @Service
 @AllArgsConstructor
 public class RegistrationService {
@@ -18,7 +15,7 @@ public class RegistrationService {
 //  private final EmailSender emailSender;
 
 
-  public String register(RegistrationDTO request,String role) {
+  public String register(RegistrationRequest request, String role) {
 //    boolean isValidEmail = emailValidator
 //            .test(request.getEmail());
 //

@@ -68,7 +68,6 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
               null,
               simpleGrantedAuthorities
       );
-      SecurityContextHolder.getContext().setAuthentication(authentication);
 
     } catch (JwtException e) {
       throw new IllegalStateException(String.format("Token %s Cannot be trusted", token));
