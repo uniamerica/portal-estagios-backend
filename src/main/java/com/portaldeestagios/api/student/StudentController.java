@@ -32,8 +32,7 @@ public class StudentController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasRole('ROLE_STUDENT')")
-  public StudentModel criar(@RequestBody StudentInput studentInput, @RequestHeader("Authorization") String token){
-//    System.out.println(token);
+  public StudentModel save(@RequestBody StudentInput studentInput){
     Student student = toEntity(studentInput);
     return toModel(service.save(student));
   }

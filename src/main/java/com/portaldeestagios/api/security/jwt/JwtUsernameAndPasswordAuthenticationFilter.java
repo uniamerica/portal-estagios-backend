@@ -23,6 +23,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
   private final JwtConfig jwtConfig;
   private final SecretKey secretKey;
 
+
   public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig, SecretKey secretKey) {
     this.authenticationManager = authenticationManager;
     this.jwtConfig = jwtConfig;
@@ -31,9 +32,14 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
     try {
       UsernamePasswordAuthenticationRequest authenticationRequest = new ObjectMapper()
-              .readValue(request.getInputStream(), UsernamePasswordAuthenticationRequest.class);
+            .readValue(request.getInputStream(), UsernamePasswordAuthenticationRequest.class);
+/*
+      String username = this.obtainUsername(request);
+      String password = this.obtainPassword(request);
+*/
 
       Authentication authentication = new UsernamePasswordAuthenticationToken(
               authenticationRequest.getUsername(),
@@ -42,7 +48,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
       return authenticationManager.authenticate(authentication);
 
     } catch (IOException e){
-      throw new RuntimeException(e);
+      throw new RuntimeException(e.getMessage());
     }
   }
 
@@ -55,6 +61,19 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     ApplicationUser user = (ApplicationUser) authResult.getPrincipal();
 
 
+    createToken(response, authResult, user);
+
+
+//    Cookie cookie = new Cookie("token", token);
+//    cookie.setPath("/");
+//    cookie.setHttpOnly(true);
+//    cookie.setMaxAge(60 * 30); // 30 minutos
+//    response.addCookie(cookie);
+
+
+  }
+
+  private void createToken(HttpServletResponse response, Authentication authResult, ApplicationUser user) {
     String token = Jwts.builder()
             .setSubject(authResult.getName())
             .claim("authorities", authResult.getAuthorities())
@@ -67,4 +86,10 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
   }
 
+  @Override
+  protected void unsuccessfulAuthentication(HttpServletRequest req, HttpServletResponse res, AuthenticationException failed) throws IOException, ServletException {
+    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    res.setContentType("application/json");
+    res.setCharacterEncoding("utf-8");
+  }
 }
