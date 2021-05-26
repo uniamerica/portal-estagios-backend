@@ -1,18 +1,13 @@
 package com.portaldeestagios.api.user;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 public class ApplicationUserService implements UserDetailsService {
@@ -21,8 +16,9 @@ public class ApplicationUserService implements UserDetailsService {
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   //private final ConfirmationTokenService confirmationTokenService;
 
+
   @Autowired
-  public ApplicationUserService(ApplicationUserRepository applicationUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+  public ApplicationUserService(ApplicationUserRepository applicationUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder, MessageSource messageSource) {
     this.applicationUserRepository = applicationUserRepository;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
@@ -35,20 +31,20 @@ public class ApplicationUserService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    if(email.equals(adminUserName)) {
-      return ApplicationUser.builder()
-              .email(adminUserName)
-              .password(bCryptPasswordEncoder.encode(adminPassword))
-              .applicationUserRole(ApplicationUserRole.ROLE_ADMIN)
-              .isAccountNonExpired(true)
-              .isCredentialsNonExpired(true)
-              .isEnabled(true)
-              .isAccountNonLocked(true)
-              .build();
-    }
+//    if(email.equals(adminUserName)) {
+//      return ApplicationUser.builder()
+//              .email(adminUserName)
+//              .password(bCryptPasswordEncoder.encode(adminPassword))
+//              .applicationUserRole(ApplicationUserRole.ROLE_ADMIN)
+//              .isAccountNonExpired(true)
+//              .isCredentialsNonExpired(true)
+//              .isEnabled(true)
+//              .isAccountNonLocked(true)
+//              .build();
+//    }
 
     return applicationUserRepository.findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
+            .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
   }
 
   public String signUpUser(ApplicationUser applicationUser) {

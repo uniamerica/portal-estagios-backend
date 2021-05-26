@@ -46,6 +46,13 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
     String token = authorizationHeader.replace(jwtConfig.getTokenPrefix(), "");
 
+//    Cookie jwt = WebUtils.getCookie(request, "token");
+//    if (jwt == null) {
+//      filterChain.doFilter(request, response);
+//      return;
+//    }
+//    String token = jwt.getValue().replace(jwtConfig.getTokenPrefix(), "");
+
     try {
       Jws<Claims> claimsJws = Jwts.parserBuilder()
               .setSigningKey(secretKey)

@@ -2,8 +2,8 @@ package com.portaldeestagios.api.student;
 
 import com.portaldeestagios.api.dtos.StudentInput;
 import com.portaldeestagios.api.dtos.StudentModel;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/students/")
 @AllArgsConstructor
+@Api(tags = "Student")
 public class StudentController {
 
   private final StudentService service;
@@ -32,8 +33,7 @@ public class StudentController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasRole('ROLE_STUDENT')")
-  public StudentModel criar(@RequestBody StudentInput studentInput, @RequestHeader("Authorization") String token){
-//    System.out.println(token);
+  public StudentModel save(@RequestBody StudentInput studentInput){
     Student student = toEntity(studentInput);
     return toModel(service.save(student));
   }

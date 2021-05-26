@@ -1,8 +1,10 @@
 package com.portaldeestagios.api.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.portaldeestagios.api.customhandlers.ResponseModel;
 import com.portaldeestagios.api.user.ApplicationUser;
 import io.jsonwebtoken.Jwts;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,13 +17,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   private final AuthenticationManager authenticationManager;
   private final JwtConfig jwtConfig;
   private final SecretKey secretKey;
+
 
   public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig, SecretKey secretKey) {
     this.authenticationManager = authenticationManager;
@@ -31,9 +36,14 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
     try {
       UsernamePasswordAuthenticationRequest authenticationRequest = new ObjectMapper()
-              .readValue(request.getInputStream(), UsernamePasswordAuthenticationRequest.class);
+            .readValue(request.getInputStream(), UsernamePasswordAuthenticationRequest.class);
+/*
+      String username = this.obtainUsername(request);
+      String password = this.obtainPassword(request);
+*/
 
       Authentication authentication = new UsernamePasswordAuthenticationToken(
               authenticationRequest.getUsername(),
@@ -42,7 +52,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
       return authenticationManager.authenticate(authentication);
 
     } catch (IOException e){
-      throw new RuntimeException(e);
+      throw new RuntimeException(e.getMessage());
     }
   }
 
@@ -55,6 +65,19 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     ApplicationUser user = (ApplicationUser) authResult.getPrincipal();
 
 
+    createToken(response, authResult, user);
+
+
+//    Cookie cookie = new Cookie("token", token);
+//    cookie.setPath("/");
+//    cookie.setHttpOnly(true);
+//    cookie.setMaxAge(60 * 30); // 30 minutos
+//    response.addCookie(cookie);
+
+
+  }
+
+  private void createToken(HttpServletResponse response, Authentication authResult, ApplicationUser user) {
     String token = Jwts.builder()
             .setSubject(authResult.getName())
             .claim("authorities", authResult.getAuthorities())
@@ -67,4 +90,19 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
   }
 
+  @Override
+  protected void unsuccessfulAuthentication(HttpServletRequest req, HttpServletResponse res, AuthenticationException failed) throws IOException, ServletException {
+    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+    ResponseModel data = new ResponseModel(
+            OffsetDateTime.now().toString(),
+            HttpStatus.UNAUTHORIZED.value(),
+            "Bad Credentials",
+            req.getRequestURL().toString());
+
+    OutputStream out = res.getOutputStream();
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValue(out, data);
+    out.flush();
+  }
 }
