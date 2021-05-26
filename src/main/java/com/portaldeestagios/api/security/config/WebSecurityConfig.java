@@ -1,7 +1,7 @@
 package com.portaldeestagios.api.security.config;
 
 import com.portaldeestagios.api.customhandlers.CustomAccessDeniedHandler;
-import com.portaldeestagios.api.customhandlers.CustomHTTP403;
+import com.portaldeestagios.api.customhandlers.CustomAuthenticationEntryPoint;
 import com.portaldeestagios.api.security.jwt.JwtConfig;
 import com.portaldeestagios.api.security.jwt.JwtTokenVerifier;
 import com.portaldeestagios.api.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -56,17 +55,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/js/*",
                     "/login",
                     "/api/v1/registration/**",
-                    "/api/**").permitAll()
+                    "/swagger-ui/**").permitAll()
             .anyRequest().authenticated()
             .and()
-            .exceptionHandling().authenticationEntryPoint(new CustomHTTP403())
-            .and()
             .formLogin()
-            .loginPage("/login");
+            .loginPage("/login")
+            .and()
+            .exceptionHandling()
+            .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+            .accessDeniedHandler(new CustomAccessDeniedHandler());
   }
 
   @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+  protected void configure(AuthenticationManagerBuilder auth)  {
     auth.authenticationProvider(daoAuthenticationProvider());
   }
 

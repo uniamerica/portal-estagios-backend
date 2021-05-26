@@ -1,8 +1,10 @@
 package com.portaldeestagios.api.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.portaldeestagios.api.customhandlers.ResponseModel;
 import com.portaldeestagios.api.user.ApplicationUser;
 import io.jsonwebtoken.Jwts;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,7 +17,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -89,7 +93,16 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
   @Override
   protected void unsuccessfulAuthentication(HttpServletRequest req, HttpServletResponse res, AuthenticationException failed) throws IOException, ServletException {
     res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    res.setContentType("application/json");
-    res.setCharacterEncoding("utf-8");
+
+    ResponseModel data = new ResponseModel(
+            OffsetDateTime.now().toString(),
+            HttpStatus.UNAUTHORIZED.value(),
+            "Bad Credentials",
+            req.getRequestURL().toString());
+
+    OutputStream out = res.getOutputStream();
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValue(out, data);
+    out.flush();
   }
 }
