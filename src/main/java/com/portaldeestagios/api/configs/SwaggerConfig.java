@@ -28,7 +28,6 @@ public class SwaggerConfig {
             .select()
             .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
             .paths(PathSelectors.any())
-            .paths(PathSelectors.any())
             .build()
             .securitySchemes(Collections.singletonList(new ApiKey("Token Access", HttpHeaders.AUTHORIZATION, In.HEADER.name())))
             .securityContexts(Collections.singletonList(securityContext()))
