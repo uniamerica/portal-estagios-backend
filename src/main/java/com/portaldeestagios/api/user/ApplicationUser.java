@@ -1,9 +1,6 @@
 package com.portaldeestagios.api.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +9,9 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,11 +19,13 @@ import java.util.Collections;
 public class ApplicationUser implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
   private Long id;
+  @EqualsAndHashCode.Include
   private String email;
   private String password;
 
-  @Enumerated
+  @Enumerated(EnumType.STRING)
   private ApplicationUserRole applicationUserRole;
 
   private boolean isAccountNonExpired = true;

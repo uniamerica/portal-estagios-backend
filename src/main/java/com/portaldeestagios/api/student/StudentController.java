@@ -25,8 +25,8 @@ public class StudentController {
 
   @GetMapping
   @PreAuthorize("hasRole('ROLE_STUDENT')")
-  public ResponseEntity<List<Student>> findAll() {
-    List<Student> list = repository.findAll();
+  public ResponseEntity<List<StudentModel>> findAll() {
+    List<StudentModel> list = toCollectionModel(repository.findAll());
     return ResponseEntity.ok(list);
   }
 
