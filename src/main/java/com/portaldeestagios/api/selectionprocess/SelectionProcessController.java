@@ -4,6 +4,7 @@ import com.portaldeestagios.api.dtos.SelectionProcessDto;
 import com.portaldeestagios.api.dtos.StudentInput;
 import com.portaldeestagios.api.dtos.StudentModel;
 import com.portaldeestagios.api.student.Student;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/selection-process")
+@Api(tags = "Selection Process")
 public class SelectionProcessController {
 
   private final SelectionProcessRepository repository;
