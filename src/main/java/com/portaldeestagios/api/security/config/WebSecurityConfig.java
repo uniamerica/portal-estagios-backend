@@ -49,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers(
                     "/",
+                    "/h2-console/**",
                     "index",
                     "/error",
                     "/css/*",
