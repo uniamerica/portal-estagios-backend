@@ -1,4 +1,4 @@
-package com.portaldeestagios.api.controller;
+package com.portaldeestagios.api.template.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
