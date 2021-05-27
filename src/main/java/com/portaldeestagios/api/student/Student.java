@@ -1,12 +1,16 @@
 package com.portaldeestagios.api.student;
 
-//import com.portaldeestagios.api.selectionprocess.SelectionProcessEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.portaldeestagios.api.selectionprocess.SelectionProcessEntity;
 import com.portaldeestagios.api.user.ApplicationUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Student {
+public class Student implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +31,7 @@ public class Student {
   @OneToOne
   private ApplicationUser applicationUser;
 
-//  @ManyToMany(mappedBy = "studentList")
-//  private Set<SelectionProcessEntity> selectionProcessEntityList = new HashSet<>();
+  @ManyToMany(mappedBy = "studentList", fetch = FetchType.EAGER)
+  private Set<SelectionProcessEntity> selectionProcessEntityList = new HashSet<>();
 
 }
