@@ -1,9 +1,6 @@
 package com.portaldeestagios.api.selectionprocess;
 
 import com.portaldeestagios.api.dtos.SelectionProcessDto;
-import com.portaldeestagios.api.dtos.StudentInput;
-import com.portaldeestagios.api.dtos.StudentModel;
-import com.portaldeestagios.api.student.Student;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
