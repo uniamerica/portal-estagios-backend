@@ -31,17 +31,17 @@ public class ApplicationUserService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//    if(email.equals(adminUserName)) {
-//      return ApplicationUser.builder()
-//              .email(adminUserName)
-//              .password(bCryptPasswordEncoder.encode(adminPassword))
-//              .applicationUserRole(ApplicationUserRole.ROLE_ADMIN)
-//              .isAccountNonExpired(true)
-//              .isCredentialsNonExpired(true)
-//              .isEnabled(true)
-//              .isAccountNonLocked(true)
-//              .build();
-//    }
+    if(email.equals(adminUserName)) {
+      return ApplicationUser.builder()
+              .email(adminUserName)
+              .password(bCryptPasswordEncoder.encode(adminPassword))
+              .applicationUserRole(ApplicationUserRole.ROLE_ADMIN)
+              .isAccountNonExpired(true)
+              .isCredentialsNonExpired(true)
+              .isEnabled(true)
+              .isAccountNonLocked(true)
+              .build();
+    }
 
     return applicationUserRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));

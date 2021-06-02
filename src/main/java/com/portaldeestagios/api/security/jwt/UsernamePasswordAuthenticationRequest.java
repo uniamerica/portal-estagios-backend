@@ -11,10 +11,6 @@ public class UsernamePasswordAuthenticationRequest {
   @ApiModelProperty(example = "user@gmail.com", required = true)
   private String username;
 
-  @ApiModelProperty(example = "password", required = true)
+  @ApiModelProperty(example = "password", required = true, position = 1)
   private String password;
-
-
-
-
 }

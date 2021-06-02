@@ -12,9 +12,9 @@ public class StudentService {
   private final ApplicationUserRepository applicationUserRepository;
   private final StudentRepository studentRepository;
 
-  public Student save(Student student) {
+  public Student save(Student student, String email) {
 
-    ApplicationUser user = applicationUserRepository.findById(student.getApplicationUser().getId())
+    ApplicationUser user = applicationUserRepository.findByEmail(email)
             .orElseThrow(() -> new IllegalStateException("Cliente não encontrado"));
 
     student.setApplicationUser(user);

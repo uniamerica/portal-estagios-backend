@@ -35,7 +35,6 @@ public class ApplicationUser implements UserDetails {
   @Size(max = 60)
   private String password;
 
-  @NotBlank
   @Enumerated(EnumType.STRING)
   private ApplicationUserRole applicationUserRole;
 

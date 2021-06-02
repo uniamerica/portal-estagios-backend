@@ -1,4 +1,4 @@
-package com.portaldeestagios.api.dtos;
+package com.portaldeestagios.api.dtos.inputDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +10,4 @@ public class StudentInput {
   private String firstName;
   private String lastName;
   private Byte age;
-
-  private UserIdInput applicationUser;
 }

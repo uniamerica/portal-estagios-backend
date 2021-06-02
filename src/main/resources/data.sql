@@ -56,24 +56,24 @@ values
 ('4', 'Vinicius', 'Oliveira');
 
 insert into selection_process
-(title)
+(title, status)
 values
-('Processo Seletivo do ITAI');
+('Processo Seletivo do ITAI', 'PENDENTE');
 
 insert into selection_process
-(title)
+(title, status)
 values
-('Processo Seletivo do PTI');
+('Processo Seletivo do PTI', 'PENDENTE');
 
 insert into selection_process
-(title)
+(title, status)
 values
-('Processo Seletivo da Uniamerica');
+('Processo Seletivo da Uniamerica', 'PENDENTE');
 
 insert into selection_process
-(title)
+(title, status)
 values
-('Processo Seletivo da Itaipu');
+('Processo Seletivo da Itaipu', 'PENDENTE');
 
 insert into selection_process_student
 (selection_process_id, student_id)
