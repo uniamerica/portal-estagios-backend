@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/students/")
 @AllArgsConstructor
-public class StudentController  {
+public class StudentController  implements StudentControllerOpenApi{
 
   private final StudentService service;
   private final StudentRepository repository;

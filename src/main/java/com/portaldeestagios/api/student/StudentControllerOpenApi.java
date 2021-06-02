@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,5 +21,5 @@ public interface StudentControllerOpenApi {
   ResponseEntity<StudentModel> findById(@ApiParam(value = "Student Id", example = "1") @PathVariable Long studentId);
 
   @ApiOperation("Save a student")
-  StudentModel save(@RequestBody StudentInput studentInput);
+  StudentModel save(@RequestBody StudentInput studentInput, Authentication authentication);
 }
