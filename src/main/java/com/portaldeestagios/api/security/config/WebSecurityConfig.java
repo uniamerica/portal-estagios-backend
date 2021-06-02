@@ -60,6 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/login",
                     "/courses",
                     "/api/v1/registration/**",
+                    "/api/v1/selection-process",
+                    "/api/v1/selection-process/**",
                     "/swagger-ui/**").permitAll()
             .anyRequest().authenticated()
             .and()
@@ -78,7 +80,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/**",
             "/configuration/security",
             "/swagger-ui.html",
-            "/webjars/**");
+            "/webjars/**",
+            "/api/v1/selection-process",
+            "/api/v1/selection-process/**");
   }
   @Override
   protected void configure(AuthenticationManagerBuilder auth)  {
