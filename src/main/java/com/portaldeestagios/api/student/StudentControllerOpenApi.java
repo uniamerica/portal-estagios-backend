@@ -1,7 +1,8 @@
 package com.portaldeestagios.api.student;
 
-import com.portaldeestagios.api.dtos.StudentModel;
-import com.portaldeestagios.api.dtos.inputDto.StudentInput;
+import com.portaldeestagios.api.dtos.model.student.StudentDto;
+import com.portaldeestagios.api.dtos.model.student.StudentListDto;
+import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,11 +14,11 @@ import java.util.List;
 @Api(tags = "Students")
 public interface StudentControllerOpenApi {
   @ApiOperation("Find all students")
-  ResponseEntity<List<StudentModel>> findAll();
+  ResponseEntity<List<StudentListDto>> findAll();
 
   @ApiOperation("Find a student by Id")
-  ResponseEntity<StudentModel> findById(@ApiParam(value = "Student Id", example = "1") @PathVariable Long studentId);
+  ResponseEntity<StudentDto> findById(@ApiParam(value = "Student Id", example = "1") @PathVariable Long studentId);
 
   @ApiOperation("Save a student")
-  StudentModel save(@RequestBody StudentInput studentInput, Authentication authentication);
+  StudentDto save(@RequestBody StudentInput studentInput, Authentication authentication) throws NoSuchFieldException;
 }

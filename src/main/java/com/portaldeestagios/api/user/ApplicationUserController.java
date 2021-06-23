@@ -1,5 +1,8 @@
 package com.portaldeestagios.api.user;
 
+import com.portaldeestagios.api.dtos.assembler.user.UserDtoAssembler;
+import com.portaldeestagios.api.dtos.model.user.UserDto;
+import com.portaldeestagios.api.dtos.model.user.UserListDto;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +18,19 @@ import java.util.List;
 public class ApplicationUserController {
 
   private final ApplicationUserRepository applicationUserRepository;
+  private final UserDtoAssembler userDtoAssembler;
+  private final ApplicationUserService applicationUserService;
 
   @GetMapping
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public List<ApplicationUser> listUser() {
-    return applicationUserRepository.findAll();
+  public List<UserListDto> listUser() {
+    return userDtoAssembler.toCollectionModel(applicationUserRepository.findAll());
   }
 
   @GetMapping("/{userId}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ApplicationUser getUser(@PathVariable Long userId) {
-    return applicationUserRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found"));
+  public UserDto getUser(@PathVariable Long userId) {
+    return userDtoAssembler.toModel(applicationUserService.findOrFail(userId));
   }
 
   @DeleteMapping("/{userId}")

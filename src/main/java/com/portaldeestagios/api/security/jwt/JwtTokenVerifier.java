@@ -61,7 +61,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
       Claims body = claimsJws.getBody();
 
-      String username = body.getSubject();
+      String name = body.getSubject();
 
       @SuppressWarnings("unchecked")
       var authorities = (List<Map<String, String>>) body.get("authorities");
@@ -71,11 +71,12 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
               .collect(Collectors.toSet());
 
       Authentication authentication = new UsernamePasswordAuthenticationToken(
-              username,
+              name,
               null,
               simpleGrantedAuthorities
       );
 
+      System.out.println(authentication);
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
     } catch (JwtException e) {
