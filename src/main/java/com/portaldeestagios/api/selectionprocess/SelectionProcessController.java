@@ -1,80 +1,90 @@
 package com.portaldeestagios.api.selectionprocess;
 
-import com.portaldeestagios.api.dtos.inputDto.InputSelectionProcess;
-import com.portaldeestagios.api.dtos.SelectionProcessDto;
+import com.portaldeestagios.api.dtos.model.selectionprocess.SelectionProcessListDto;
+import com.portaldeestagios.api.dtos.assembler.selectionProcess.SelectionProcessDtoAssembler;
+import com.portaldeestagios.api.dtos.assembler.selectionProcess.SelectionProcessDtoDisassembler;
+import com.portaldeestagios.api.dtos.inputDto.selectionprocess.InputSelectionProcess;
+import com.portaldeestagios.api.dtos.model.selectionprocess.SelectionProcessDto;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/selection-process")
+@RequestMapping("/api/v1/selection-process/")
 @Api(tags = "Selection Process")
 public class SelectionProcessController {
 
+  private final SelectionProcessDtoAssembler selectionProcessDtoAssembler;
+  private final SelectionProcessDtoDisassembler selectionProcessDtoDisassembler;
   private final SelectionProcessRepository repository;
-  private final SelectionProcessService service;
-  private final ModelMapper modelMapper;
+  private final SelectionProcessService selectionProcessService;
+  private final SelectionProcessFlowService selectionProcessFlowService;
 
+  @Transactional
   @GetMapping
-  public ResponseEntity<List<SelectionProcessDto>> findAll() {
-    List<SelectionProcessDto> list = toCollectionModel(repository.findAll());
+  public ResponseEntity<List<SelectionProcessListDto>> findAll() {
+    List<SelectionProcessListDto> list = selectionProcessDtoAssembler.toCollectionModel(repository.findAll());
     return ResponseEntity.ok(list);
   }
 
+  @Transactional
   @GetMapping("/{selectionProcessId}")
   public ResponseEntity<SelectionProcessDto> findById(@PathVariable Long selectionProcessId) {
-    SelectionProcessDto selectionProcess = toModel(repository.findById(selectionProcessId).orElseThrow(() -> new IllegalStateException("Selection Process Not Found")));
+    SelectionProcessDto selectionProcess = selectionProcessDtoAssembler.toModel(selectionProcessService.findOrFail(selectionProcessId));
     return ResponseEntity.ok(selectionProcess);
   }
 
   @PostMapping
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public SelectionProcessDto create(@RequestBody InputSelectionProcess selectionProcess) {
-    SelectionProcessEntity selectionProcessEntity = toEntity(selectionProcess);
-    return toModel(repository.save(selectionProcessEntity));
+  public SelectionProcessDto create(@RequestBody @Valid InputSelectionProcess selectionProcess) {
+    SelectionProcessEntity selectionProcessEntity = selectionProcessDtoDisassembler.toEntity(selectionProcess);
+    return selectionProcessDtoAssembler.toModel(repository.save(selectionProcessEntity));
   }
 
   @PutMapping("/{selectionProcessId}/register")
   @PreAuthorize("hasRole('ROLE_STUDENT')")
   public SelectionProcessDto register(@PathVariable Long selectionProcessId, Authentication authentication) {
     String email = authentication.getName();
-    return toModel(service.register(selectionProcessId, email));
+    return selectionProcessDtoAssembler.toModel(selectionProcessService.register(selectionProcessId, email));
   }
 
   @PutMapping("/{selectionProcessId}/leave")
   @PreAuthorize("hasRole('ROLE_STUDENT')")
   public SelectionProcessDto leave(@PathVariable Long selectionProcessId, Authentication authentication) {
     String email = authentication.getName();
-    return toModel(service.leave(selectionProcessId, email));
+    return selectionProcessDtoAssembler.toModel(selectionProcessService.leave(selectionProcessId, email));
   }
 
   @PatchMapping("/{selectionProcessId}/open")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public SelectionProcessDto open(@PathVariable Long selectionProcessId) {
-    return toModel(service.open(selectionProcessId));
+  public void open(@PathVariable Long selectionProcessId) {
+    selectionProcessFlowService.open(selectionProcessId);
   }
 
-
-
-
-  private List<SelectionProcessDto> toCollectionModel(List<SelectionProcessEntity> selectionProcessList) {
-    return selectionProcessList.stream().map(this::toModel).collect(Collectors.toList());
+  @PatchMapping("/{selectionProcessId}/analysis")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public void analysis(@PathVariable Long selectionProcessId) {
+    selectionProcessFlowService.analysis(selectionProcessId);
   }
 
-  private SelectionProcessDto toModel(SelectionProcessEntity selectionProcess) {
-    return modelMapper.map(selectionProcess, SelectionProcessDto.class);
+  @PatchMapping("/{selectionProcessId}/selection")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public void selection(@PathVariable Long selectionProcessId) {
+    selectionProcessFlowService.selection(selectionProcessId);
   }
 
-  private SelectionProcessEntity toEntity(InputSelectionProcess selectionProcess) {
-    return modelMapper.map(selectionProcess, SelectionProcessEntity.class);
+  @PatchMapping("/{selectionProcessId}/finish")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public void finish(@PathVariable Long selectionProcessId) {
+    selectionProcessFlowService.finish(selectionProcessId);
   }
 }
 

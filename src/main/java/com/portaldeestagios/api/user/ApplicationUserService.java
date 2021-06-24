@@ -1,8 +1,9 @@
 package com.portaldeestagios.api.user;
 
+import com.portaldeestagios.api.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,25 +24,9 @@ public class ApplicationUserService implements UserDetailsService {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
-  @Value("${spring.security.user.name}")
-  private String adminUserName;
-
-  @Value("${spring.security.user.password}")
-  private String adminPassword;
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    if(email.equals(adminUserName)) {
-      return ApplicationUser.builder()
-              .email(adminUserName)
-              .password(bCryptPasswordEncoder.encode(adminPassword))
-              .applicationUserRole(ApplicationUserRole.ROLE_ADMIN)
-              .isAccountNonExpired(true)
-              .isCredentialsNonExpired(true)
-              .isEnabled(true)
-              .isAccountNonLocked(true)
-              .build();
-    }
 
     return applicationUserRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
@@ -51,7 +36,7 @@ public class ApplicationUserService implements UserDetailsService {
     boolean userExists = applicationUserRepository.findByEmail(applicationUser.getEmail()).isPresent();
 
     if (userExists) {
-      throw new IllegalStateException("Email already taken");
+      throw new DataIntegrityViolationException("Email already taken");
     }
 
     String encodedPassword = bCryptPasswordEncoder.encode(applicationUser.getPassword());
@@ -74,8 +59,13 @@ public class ApplicationUserService implements UserDetailsService {
     return null;
   }
 
-  public int enableAppUser(String email) {
-    return applicationUserRepository.enableAppUser(email);
+//  public int enableAppUser(String email) {
+//    return applicationUserRepository.enableAppUser(email);
+//  }
+
+  public ApplicationUser findOrFail(Long userId) {
+    return applicationUserRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException(userId));
   }
 }
 

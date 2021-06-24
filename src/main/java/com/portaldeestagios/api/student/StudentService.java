@@ -4,6 +4,7 @@ import com.portaldeestagios.api.user.ApplicationUser;
 import com.portaldeestagios.api.user.ApplicationUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -12,6 +13,7 @@ public class StudentService {
   private final ApplicationUserRepository applicationUserRepository;
   private final StudentRepository studentRepository;
 
+  @Transactional
   public Student save(Student student, String email) {
 
     ApplicationUser user = applicationUserRepository.findByEmail(email)
