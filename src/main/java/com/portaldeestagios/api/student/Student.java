@@ -15,6 +15,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Student implements Serializable {
@@ -32,5 +33,14 @@ public class Student implements Serializable {
 
   @ManyToMany(mappedBy = "studentList", fetch = FetchType.EAGER)
   private Set<SelectionProcessEntity> selectionProcessEntityList = new HashSet<>();
+
+
+  @Builder
+  public Student(Long id, String firstName, String lastName, Byte age) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.age = age;
+  }
 
 }
