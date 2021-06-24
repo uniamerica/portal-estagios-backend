@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/students/")
+@RequestMapping("/students/")
 @AllArgsConstructor
 public class StudentController  implements StudentControllerOpenApi{
 

@@ -9,6 +9,8 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class InputSelectionProcess {
+  @NotBlank
+  private String companyName;
 
   @ApiModelProperty(example = "Processo seletivo Engenharia de Software da Uniamérica", required = true)
   @NotBlank

@@ -2,9 +2,7 @@ package com.portaldeestagios.api.student;
 
 import com.portaldeestagios.api.selectionprocess.SelectionProcessEntity;
 import com.portaldeestagios.api.user.ApplicationUser;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@AllArgsConstructor
 public class Student implements Serializable {
 
   @Id

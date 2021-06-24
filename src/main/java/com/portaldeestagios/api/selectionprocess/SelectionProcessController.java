@@ -18,7 +18,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/selection-process/")
+@RequestMapping("/selection-process")
 @Api(tags = "Selection Process")
 public class SelectionProcessController {
 

@@ -59,12 +59,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/js/*",
                     "/login",
                     "/courses",
-                    "/api/v1/registration/**",
-                    "/api/v1/selection-process",
-                    "/api/v1/selection-process/**",
+                    "/registration/**",
+                    "/selection-process",
+                    "/selection-process/**",
                     "/swagger-ui/**").permitAll()
             .antMatchers(HttpMethod.POST,
-            "/api/v1/registration/**").permitAll()
+            "/registration/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))

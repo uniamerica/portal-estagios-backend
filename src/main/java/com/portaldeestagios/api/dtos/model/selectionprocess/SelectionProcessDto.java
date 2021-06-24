@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class SelectionProcessDto implements Serializable {
   private Long id;
+  private String companyName;
   private String title;
 
   private SelectionProcessStatusEnum status;

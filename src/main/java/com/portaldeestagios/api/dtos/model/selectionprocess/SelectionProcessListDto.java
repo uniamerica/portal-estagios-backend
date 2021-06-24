@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Setter
 public class SelectionProcessListDto implements Serializable {
   private Long id;
+  private String companyName;
   private String title;
   private SelectionProcessStatusEnum status;
 

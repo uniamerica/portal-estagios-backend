@@ -53,11 +53,11 @@ values ('35', '1', 'Alexandre', 'Zanlorenzi'),
        ('25', '3', 'Thaina', 'Chagas'),
        ('23', '4', 'Vinicius', 'Oliveira');
 
-insert into selection_process (title, status)
-values ('Processo Seletivo do ITAI', 'PENDENTE'),
-       ('Processo Seletivo do PTI', 'ABERTO'),
-       ('Processo Seletivo da Uniamerica', 'ABERTO'),
-       ('Processo Seletivo da Itaipu', 'ABERTO');
+insert into selection_process (id, company_name, title, status)
+values (1, 'Itai','Processo Seletivo do ITAI', 'PENDENTE'),
+       (2, 'PTI','Processo Seletivo do PTI', 'ABERTO'),
+       (3, 'Uniamerica','Processo Seletivo da Uniamerica', 'ABERTO'),
+       (4, 'Itaipu','Processo Seletivo da Itaipu', 'ABERTO');
 
 insert into selection_process_student (selection_process_id, student_id)
 values ('1', '1'),

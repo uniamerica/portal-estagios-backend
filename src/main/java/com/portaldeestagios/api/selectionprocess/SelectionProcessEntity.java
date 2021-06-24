@@ -3,13 +3,9 @@ package com.portaldeestagios.api.selectionprocess;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.portaldeestagios.api.exception.NegocioException;
 import com.portaldeestagios.api.student.Student;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,8 +14,9 @@ import static com.portaldeestagios.api.selectionprocess.SelectionProcessStatusEn
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Table(name = "selection_process")
 public class SelectionProcessEntity {
 
@@ -27,11 +24,11 @@ public class SelectionProcessEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  private String companyName;
   private String title;
 
-  @JsonIgnore
   @Enumerated(EnumType.STRING)
-  private SelectionProcessStatusEnum status = PENDENTE;
+  private SelectionProcessStatusEnum status;
 
   @ManyToMany
   @JoinTable(
@@ -40,6 +37,10 @@ public class SelectionProcessEntity {
           inverseJoinColumns = {@JoinColumn(name = "student_id")}
   )
   Set<Student> studentList = new HashSet<>();
+
+  public SelectionProcessEntity(long l, String dr, SelectionProcessStatusEnum aberto, HashSet<Student> students) {
+
+  }
 
   public void open() {
     setStatus(ABERTO);
