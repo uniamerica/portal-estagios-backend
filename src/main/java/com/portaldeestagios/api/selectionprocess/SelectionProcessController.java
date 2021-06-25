@@ -28,10 +28,16 @@ public class SelectionProcessController {
   private final SelectionProcessService selectionProcessService;
   private final SelectionProcessFlowService selectionProcessFlowService;
 
-  @Transactional
+//  @Transactional
+//  @GetMapping
+//  public ResponseEntity<List<SelectionProcessListDto>> findAll() {
+//    List<SelectionProcessListDto> list = selectionProcessDtoAssembler.toCollectionModel(repository.findAll());
+//    return ResponseEntity.ok(list);
+//  }
+
   @GetMapping
-  public ResponseEntity<List<SelectionProcessListDto>> findAll() {
-    List<SelectionProcessListDto> list = selectionProcessDtoAssembler.toCollectionModel(repository.findAll());
+  public ResponseEntity<List<SelectionProcessListDto>> findAllOpenSelectionProcess() {
+    List<SelectionProcessListDto> list = selectionProcessDtoAssembler.toCollectionModel(repository.findByStatusNotPending());
     return ResponseEntity.ok(list);
   }
 

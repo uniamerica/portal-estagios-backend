@@ -3,6 +3,7 @@ package com.portaldeestagios.api.selectionprocess;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface SelectionProcessRepository extends JpaRepository<SelectionProcessEntity, Long> {
@@ -14,4 +15,7 @@ public interface SelectionProcessRepository extends JpaRepository<SelectionProce
           "join sl.applicationUser au \n" +
           "where sp.id = :id")
   Optional<SelectionProcessEntity> findByIdCustom(Long id);
+
+  @Query("from SelectionProcessEntity sp where not sp.status = 'PENDENTE'")
+  List<SelectionProcessEntity> findByStatusNotPending();
 }
