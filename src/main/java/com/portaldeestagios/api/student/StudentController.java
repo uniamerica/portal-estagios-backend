@@ -4,7 +4,7 @@ import com.portaldeestagios.api.dtos.model.student.StudentListDto;
 import com.portaldeestagios.api.dtos.assembler.student.StudentDtoAssembler;
 import com.portaldeestagios.api.dtos.assembler.student.StudentDtoDisassembler;
 import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
-import com.portaldeestagios.api.dtos.model.student.StudentDto;
+import com.portaldeestagios.api.dtos.model.student.StudentTokenDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,18 +33,19 @@ public class StudentController  implements StudentControllerOpenApi{
     return ResponseEntity.ok(list);
   }
 
-  @GetMapping("/{studentId}")
+  @GetMapping("/token")
   @PreAuthorize("hasRole('ROLE_STUDENT')")
-  public ResponseEntity<StudentDto> findById(@PathVariable Long studentId) {
-
-    StudentDto student = studentDtoAssembler.toModel(repository.findById(studentId).orElseThrow(() -> new IllegalStateException("Student not found...")));
+  @Transactional
+  public ResponseEntity<StudentTokenDto> findByToken(Authentication authentication) {
+    String email = authentication.getName();
+    StudentTokenDto student = studentDtoAssembler.toModel(service.findByToken(email));
     return ResponseEntity.ok(student);
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasRole('ROLE_STUDENT')")
-  public StudentDto save(@RequestBody StudentInput studentInput, Authentication authentication) {
+  public StudentTokenDto save(@RequestBody StudentInput studentInput, Authentication authentication) {
     String email = authentication.getName();
 
     Student student = studentDtoDisassembler.toEntity(studentInput);

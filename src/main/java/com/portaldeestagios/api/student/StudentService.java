@@ -23,4 +23,9 @@ public class StudentService {
 
     return studentRepository.save(student);
   }
+
+  public Student findByToken(String email) {
+    return studentRepository.findByApplicationUserEmail(email)
+            .orElseThrow(() -> new IllegalStateException("Cliente não encontrado"));
+  }
 }

@@ -1,6 +1,6 @@
 package com.portaldeestagios.api.dtos.assembler.student;
 
-import com.portaldeestagios.api.dtos.model.student.StudentDto;
+import com.portaldeestagios.api.dtos.model.student.StudentTokenDto;
 import com.portaldeestagios.api.dtos.model.student.StudentListDto;
 import com.portaldeestagios.api.student.Student;
 import org.modelmapper.ModelMapper;
@@ -16,8 +16,8 @@ public class StudentDtoAssembler {
   @Autowired
   private ModelMapper modelMapper;
 
-  public StudentDto toModel(Student student) {
-    return modelMapper.map(student, StudentDto.class);
+  public StudentTokenDto toModel(Student student) {
+    return modelMapper.map(student, StudentTokenDto.class);
   }
 
   public StudentListDto toModelList(Student student) {

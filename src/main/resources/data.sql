@@ -47,11 +47,12 @@ values ('ROLE_EDUCATIONAL_INSTITUTION', 'uniamerica@gmail.com', 'true', 'true', 
         '$2a$10$0j5hRwkkXuzQ0.H1sT42GOzJMZT66tvCisohRFR7T3eyGFvAM2.yS');
 
 
-insert into student (age, application_user_id, first_name, last_name)
-values ('35', '1', 'Alexandre', 'Zanlorenzi'),
-       ('26', '2', 'Bruno', 'Segatto'),
-       ('25', '3', 'Thaina', 'Chagas'),
-       ('23', '4', 'Vinicius', 'Oliveira');
+insert into student (age, application_user_id, first_name, last_name, photo)
+values ('35', '1', 'Alexandre', 'Zanlorenzi', 'https://avatars.githubusercontent.com/u/63269650?v=4'),
+       ('26', '2', 'Bruno', 'Segatto', 'https://avatars.githubusercontent.com/u/24920256?v=4'),
+       ('25', '3', 'Thaina', 'Chagas', ' https://avatars.githubusercontent.com/u/65509827?v=4'),
+       ('23', '4', 'Vinicius', 'Oliveira', 'https://avatars.githubusercontent.com/u/14930948?v=4');
+
 
 insert into selection_process (id, company_name, title, status)
 values (1, 'Itai','Processo Seletivo do ITAI', 'PENDENTE'),

@@ -29,6 +29,8 @@ public class Student implements Serializable {
 
   private Byte age;
 
+  private String photo;
+
   @OneToOne
   @JoinColumn(unique = true)
   private ApplicationUser applicationUser;
