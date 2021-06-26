@@ -28,7 +28,7 @@ public class SelectionProcessService {
 
     if(selectionProcess.getStatus().equals(SelectionProcessStatusEnum.ABERTO)) {
       Student student = studentService.findByEmail(email);
-      studentService.checkStudentIsEmpty(student);
+      student.checkStudentIsEmpty();
       boolean studentRegistered = selectionProcess.getStudentList()
               .stream()
               .anyMatch(x -> x.getId().equals(student.getId()));
@@ -43,7 +43,7 @@ public class SelectionProcessService {
                       + selectionProcess.getTitle() + "</strong> foi confirmada com sucesso!")
               .destinatario(student.getApplicationUser().getEmail())
               .build();
-      sendEmail.send(mensagem);
+     // sendEmail.send(mensagem);
 
       return selectionProcessRepository.save(selectionProcess);
     }

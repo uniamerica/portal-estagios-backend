@@ -30,10 +30,4 @@ public class StudentService {
     return studentRepository.findByApplicationUserEmail(email)
             .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
   }
-
-  public void checkStudentIsEmpty(Student student) {
-    if (student.getFirstName() == null || student.getLastName() == null) {
-      throw new NegocioException("Complete seu perfil");
-    }
-  }
 }
