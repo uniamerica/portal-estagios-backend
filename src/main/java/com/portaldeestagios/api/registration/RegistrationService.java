@@ -13,9 +13,9 @@ public class RegistrationService {
 
 
 
-  public String register(RegistrationRequest request, String role) {
+  public void register(RegistrationRequest request, String role) {
 
-    return applicationUserService.signUpUser(
+    applicationUserService.signUpUser(
             new ApplicationUser(
                     request.getEmail(),
                     request.getPassword(),

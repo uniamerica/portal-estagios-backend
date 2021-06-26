@@ -4,6 +4,7 @@ import com.portaldeestagios.api.email.SendEmailService;
 import com.portaldeestagios.api.exception.SelectionProcessNotFoundException;
 import com.portaldeestagios.api.student.Student;
 import com.portaldeestagios.api.student.StudentRepository;
+import com.portaldeestagios.api.student.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import static com.portaldeestagios.api.email.SendEmailService.Mensagem;
 public class SelectionProcessService {
 
   private final StudentRepository studentRepository;
+  private final StudentService studentService;
   private final SelectionProcessRepository selectionProcessRepository;
   private final SendEmailService sendEmail;
 
@@ -24,11 +26,9 @@ public class SelectionProcessService {
 
     SelectionProcessEntity selectionProcess = find(selectionProcessId);
 
-    System.out.println(selectionProcess.toString());
-
     if(selectionProcess.getStatus().equals(SelectionProcessStatusEnum.ABERTO)) {
-      Student student = studentRepository.findByApplicationUserEmail(email)
-              .orElseThrow(() -> new IllegalStateException("Cliente não encontrado"));
+      Student student = studentService.findByEmail(email);
+      studentService.checkStudentIsEmpty(student);
       boolean studentRegistered = selectionProcess.getStudentList()
               .stream()
               .anyMatch(x -> x.getId().equals(student.getId()));

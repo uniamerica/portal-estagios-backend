@@ -29,6 +29,7 @@ public class ApplicationUser implements UserDetails {
   @EqualsAndHashCode.Include
   @NotBlank
   @Email
+  @Column(unique = true)
   private String email;
 
   @NotBlank

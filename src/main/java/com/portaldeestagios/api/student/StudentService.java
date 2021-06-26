@@ -1,5 +1,7 @@
 package com.portaldeestagios.api.student;
 
+import com.portaldeestagios.api.exception.NegocioException;
+import com.portaldeestagios.api.exception.UserNotFoundException;
 import com.portaldeestagios.api.user.ApplicationUser;
 import com.portaldeestagios.api.user.ApplicationUserRepository;
 import lombok.AllArgsConstructor;
@@ -17,15 +19,21 @@ public class StudentService {
   public Student save(Student student, String email) {
 
     ApplicationUser user = applicationUserRepository.findByEmail(email)
-            .orElseThrow(() -> new IllegalStateException("Cliente não encontrado"));
+            .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
     student.setApplicationUser(user);
 
     return studentRepository.save(student);
   }
 
-  public Student findByToken(String email) {
+  public Student findByEmail(String email) {
     return studentRepository.findByApplicationUserEmail(email)
-            .orElseThrow(() -> new IllegalStateException("Cliente não encontrado"));
+            .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+  }
+
+  public void checkStudentIsEmpty(Student student) {
+    if (student.getFirstName() == null || student.getLastName() == null) {
+      throw new NegocioException("Complete seu perfil");
+    }
   }
 }

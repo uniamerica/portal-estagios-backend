@@ -38,7 +38,7 @@ public class StudentController  implements StudentControllerOpenApi{
   @Transactional
   public ResponseEntity<StudentTokenDto> findByToken(Authentication authentication) {
     String email = authentication.getName();
-    StudentTokenDto student = studentDtoAssembler.toModel(service.findByToken(email));
+    StudentTokenDto student = studentDtoAssembler.toModel(service.findByEmail(email));
     return ResponseEntity.ok(student);
   }
 
