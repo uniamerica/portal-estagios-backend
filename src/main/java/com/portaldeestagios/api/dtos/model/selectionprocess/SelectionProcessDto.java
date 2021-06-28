@@ -1,6 +1,6 @@
 package com.portaldeestagios.api.dtos.model.selectionprocess;
 
-import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
+import com.portaldeestagios.api.dtos.model.student.StudentDto;
 import com.portaldeestagios.api.selectionprocess.SelectionProcessStatusEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +17,5 @@ public class SelectionProcessDto implements Serializable {
 
   private SelectionProcessStatusEnum status;
 
-  private List<StudentInput> studentList;
+  private List<StudentDto> studentList;
 }
