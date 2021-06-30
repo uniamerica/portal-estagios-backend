@@ -43,7 +43,7 @@ public class SelectionProcessService {
                       + selectionProcess.getTitle() + "</strong> foi confirmada com sucesso!")
               .destinatario(student.getApplicationUser().getEmail())
               .build();
-     // sendEmail.send(mensagem);
+      sendEmail.send(mensagem);
 
       return selectionProcessRepository.save(selectionProcess);
     }

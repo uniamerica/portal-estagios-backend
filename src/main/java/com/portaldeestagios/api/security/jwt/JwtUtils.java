@@ -6,8 +6,11 @@ import com.portaldeestagios.api.student.Student;
 import com.portaldeestagios.api.student.StudentService;
 import com.portaldeestagios.api.user.ApplicationUser;
 import com.portaldeestagios.api.user.ApplicationUserRole;
+import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -41,4 +44,6 @@ public class JwtUtils {
             .signWith(secretKey)
             .compact();
   }
+
+
 }

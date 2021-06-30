@@ -1,9 +1,12 @@
 package com.portaldeestagios.api.student;
 
+import com.portaldeestagios.api.dtos.assembler.student.StudentProfileDtoAssembler;
+import com.portaldeestagios.api.dtos.model.student.StudentDto;
 import com.portaldeestagios.api.dtos.model.student.StudentListDto;
 import com.portaldeestagios.api.dtos.assembler.student.StudentDtoAssembler;
 import com.portaldeestagios.api.dtos.assembler.student.StudentDtoDisassembler;
 import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
+import com.portaldeestagios.api.dtos.model.student.StudentProfileDto;
 import com.portaldeestagios.api.dtos.model.student.StudentTokenDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,7 @@ public class StudentController  implements StudentControllerOpenApi{
   private final StudentService service;
   private final StudentRepository repository;
   private final StudentDtoAssembler studentDtoAssembler;
+  private final StudentProfileDtoAssembler studentProfileDtoAssembler;
   private final StudentDtoDisassembler studentDtoDisassembler;
 
   @GetMapping
@@ -42,13 +46,21 @@ public class StudentController  implements StudentControllerOpenApi{
     return ResponseEntity.ok(student);
   }
 
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
+  @GetMapping("/profile")
+  @PreAuthorize("hasRole('ROLE_STUDENT')")
+  @Transactional
+  public ResponseEntity<StudentProfileDto> findByTokenProfile(Authentication authentication) {
+    String email = authentication.getName();
+    StudentProfileDto student = studentProfileDtoAssembler.toModel(service.findByEmail(email));
+    return ResponseEntity.ok(student);
+  }
+
+  @PutMapping
+  @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasRole('ROLE_STUDENT')")
   public StudentTokenDto save(@RequestBody StudentInput studentInput, Authentication authentication) {
     String email = authentication.getName();
 
-    Student student = studentDtoDisassembler.toEntity(studentInput);
-    return studentDtoAssembler.toModel(service.save(student, email));
+    return studentDtoAssembler.toModel(service.update(studentInput, email));
   }
 }

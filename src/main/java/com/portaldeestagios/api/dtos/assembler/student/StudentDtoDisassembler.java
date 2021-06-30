@@ -15,4 +15,8 @@ public class StudentDtoDisassembler {
   public Student toEntity(StudentInput student) {
     return modelMapper.map(student, Student.class);
   }
+
+  public void copyToEntity(StudentInput studentInput, Student student) {
+    modelMapper.map(studentInput, student);
+  }
 }

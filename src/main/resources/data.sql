@@ -41,8 +41,7 @@ values (1, 'Itai', 'Processo Seletivo do ITAI', 'PENDENTE'),
        (4, 'Itaipu', 'Processo Seletivo da Itaipu', 'ABERTO');
 
 insert into selection_process_student (selection_process_id, student_id)
-values ('1', '1'),
-       ('2', '1'),
+values ('2', '1'),
        ('3', '1'),
        ('3', '2'),
        ('2', '4'),
