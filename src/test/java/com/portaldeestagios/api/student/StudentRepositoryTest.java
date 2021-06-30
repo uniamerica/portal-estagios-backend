@@ -19,7 +19,7 @@ class StudentRepositoryTest {
     @DisplayName("Test if student is persisted correct")
     void save_PersistStudent_WhenSuccessful(){
 
-        Student student = studentBuilder();
+        Student student = StudentFactory.studentBuilderToBeSaved();
         Student savedStudent = this.studentRepository.save(student);
 
         Assertions.assertThat(savedStudent).isNotNull();
@@ -32,7 +32,7 @@ class StudentRepositoryTest {
     @DisplayName("Test if student is updated correct")
     void save_UpdatedStudent_WhenSuccessful(){
 
-        Student student = studentBuilder();
+        Student student = StudentFactory.studentBuilderToBeSaved();
         Student savedStudent = this.studentRepository.save(student);
         savedStudent.setFirstName("Alexandre");
         Student updatedStudent = this.studentRepository.save(student);
@@ -46,7 +46,7 @@ class StudentRepositoryTest {
     @DisplayName("Test if student is deleted correct")
     void delete_PersistStudent_WhenSuccessful(){
 
-        Student student = studentBuilder();
+        Student student = StudentFactory.studentBuilderToBeSaved();
         Student savedStudent = this.studentRepository.save(student);
         this.studentRepository.delete(savedStudent);
         Optional<Student> studentOptional = this.studentRepository.findById(savedStudent.getId());
@@ -55,14 +55,6 @@ class StudentRepositoryTest {
     }
 
 
-    private Student studentBuilder(){
-        return Student.builder()
-                .id(1L)
-                .firstName("Bruno")
-                .lastName("Segato")
-                .age((byte) 26)
-                .build();
 
-    }
 
 }
