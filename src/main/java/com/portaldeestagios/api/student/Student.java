@@ -1,5 +1,6 @@
 package com.portaldeestagios.api.student;
 
+import com.portaldeestagios.api.exception.NegocioException;
 import com.portaldeestagios.api.selectionprocess.SelectionProcessEntity;
 import com.portaldeestagios.api.user.ApplicationUser;
 import lombok.*;
@@ -45,6 +46,12 @@ public class Student implements Serializable {
     this.firstName = firstName;
     this.lastName = lastName;
     this.age = age;
+  }
+
+  public void checkStudentIsEmpty() {
+    if (this.getFirstName() == null || this.getLastName() == null) {
+      throw new NegocioException("Complete seu perfil");
+    }
   }
 
 }

@@ -10,4 +10,5 @@ public class StudentInput {
   private String firstName;
   private String lastName;
   private Byte age;
+  private String photo;
 }

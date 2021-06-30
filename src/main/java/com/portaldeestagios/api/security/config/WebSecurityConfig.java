@@ -5,6 +5,7 @@ import com.portaldeestagios.api.customhandlers.CustomAuthenticationEntryPoint;
 import com.portaldeestagios.api.security.jwt.JwtConfig;
 import com.portaldeestagios.api.security.jwt.JwtTokenVerifier;
 import com.portaldeestagios.api.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
+import com.portaldeestagios.api.security.jwt.JwtUtils;
 import com.portaldeestagios.api.user.ApplicationUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +25,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.SecretKey;
-import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -38,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final SecretKey secretKey;
   private final JwtConfig jwtConfig;
+  private final JwtUtils jwtUtils;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -67,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/registration/**").permitAll()
             .anyRequest().authenticated()
             .and()
-            .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
+            .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, jwtUtils))
             .addFilterBefore(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
             .formLogin()
             .loginPage("/login")

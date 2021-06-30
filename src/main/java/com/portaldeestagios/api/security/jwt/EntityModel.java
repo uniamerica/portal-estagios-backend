@@ -1,12 +1,12 @@
-package com.portaldeestagios.api.dtos.model.student;
+package com.portaldeestagios.api.security.jwt;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class StudentTokenDto {
+public class EntityModel {
   private Long id;
-  private String firstName;
+  private String name;
   private String photo;
 }
