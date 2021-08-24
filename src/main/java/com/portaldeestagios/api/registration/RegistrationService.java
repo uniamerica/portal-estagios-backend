@@ -12,7 +12,6 @@ public class RegistrationService {
   private final ApplicationUserService applicationUserService;
 
 
-
   public void register(RegistrationRequest request, String role) {
 
     applicationUserService.signUpUser(
