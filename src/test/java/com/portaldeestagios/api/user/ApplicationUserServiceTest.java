@@ -44,7 +44,7 @@ public class ApplicationUserServiceTest {
     private ApplicationUserService applicationUserService;
 
     @Test
-    public void signUp(){
+    public void signUp_success(){
         ApplicationUser applicationUser = new ApplicationUser("vinicius.vof@outlook.com", "1234", ROLE_ADMIN);
 
         Student student = new Student();
@@ -60,5 +60,26 @@ public class ApplicationUserServiceTest {
         verify(bCryptPasswordEncoder, times(1)).encode(applicationUser.getPassword());
         verify(applicationUserRepository, times(1)).save(applicationUser);
         verify(studentRepository, times(1)).save(student);
+    }
+    @Test
+    public void loadUserByUsername_success(){
+        ApplicationUser applicationUser = new ApplicationUser("vinicius.vof@outlook.com", "1234", ROLE_ADMIN);
+
+        Mockito.when(applicationUserRepository.findByEmail("vinicius.vof@outlook.com")).thenReturn(Optional.of(applicationUser));
+
+        applicationUserService.loadUserByUsername(applicationUser.getUsername());
+
+        verify(applicationUserRepository, times(1)).findByEmail(applicationUser.getUsername());
+
+    }
+    @Test
+    public void findOrFail_success(){
+        ApplicationUser applicationUser = new ApplicationUser("vinicius.vof@outlook.com", "1234", ROLE_ADMIN);
+
+        Mockito.when(applicationUserRepository.findById(1L)).thenReturn(Optional.of(applicationUser));
+
+        applicationUserService.findOrFail(1L);
+
+        verify(applicationUserRepository, times(1)).findById(1L);
     }
 }
