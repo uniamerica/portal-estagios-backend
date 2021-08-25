@@ -64,7 +64,7 @@ public class SelectionProcessService {
     return selectionProcessRepository.save(selectionProcess);
   }
 
-  private SelectionProcessEntity find(Long selectionProcessId) {
+  public SelectionProcessEntity find(Long selectionProcessId) {
     return selectionProcessRepository.findByIdCustom(selectionProcessId)
             .orElseThrow(() -> new SelectionProcessNotFoundException(selectionProcessId));
   }

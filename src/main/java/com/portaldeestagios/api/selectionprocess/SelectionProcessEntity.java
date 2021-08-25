@@ -16,6 +16,7 @@ import static com.portaldeestagios.api.selectionprocess.SelectionProcessStatusEn
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "selection_process")
 public class SelectionProcessEntity {
