@@ -1,12 +1,13 @@
 package com.portaldeestagios.api.student;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @DisplayName("Student Repository test")
@@ -22,11 +23,10 @@ class StudentRepositoryTest {
         Student student = StudentFactory.studentBuilderToBeSaved();
         Student savedStudent = this.studentRepository.save(student);
 
-        Assertions.assertThat(savedStudent).isNotNull();
-        Assertions.assertThat(savedStudent.getId()).isNotNull();
-        Assertions.assertThat(savedStudent.getFirstName().equals(student.getFirstName()));
+        assertThat(savedStudent).isNotNull();
+        assertThat(savedStudent.getId()).isNotNull();
+        assertThat(savedStudent.getFirstName().equals(student.getFirstName()));
     }
-
 
     @Test
     @DisplayName("Test if student is updated correct")
@@ -37,9 +37,9 @@ class StudentRepositoryTest {
         savedStudent.setFirstName("Alexandre");
         Student updatedStudent = this.studentRepository.save(student);
 
-        Assertions.assertThat(savedStudent).isNotNull();
-        Assertions.assertThat(savedStudent.getId()).isNotNull();
-        Assertions.assertThat(updatedStudent.getFirstName().equals(savedStudent.getFirstName()));
+        assertThat(savedStudent).isNotNull();
+        assertThat(savedStudent.getId()).isNotNull();
+        assertThat(updatedStudent.getFirstName().equals(savedStudent.getFirstName()));
     }
 
     @Test
@@ -51,10 +51,19 @@ class StudentRepositoryTest {
         this.studentRepository.delete(savedStudent);
         Optional<Student> studentOptional = this.studentRepository.findById(savedStudent.getId());
 
-        Assertions.assertThat(studentOptional.isEmpty()).isTrue();
+        assertThat(studentOptional.isEmpty()).isTrue();
     }
 
 
+    @Test
+    @DisplayName("Test if student is find by Email correctly")
+    void findStudentByApplicationUserEmail(){
+        Student student = StudentFactory.studentWithUser();
+        this.studentRepository.save(student);
+        Optional<Student> searchedStudent = this.studentRepository.findByApplicationUserEmail(student.getApplicationUser().getEmail());
 
+        assertThat(searchedStudent).isNotNull();
+        assertThat(searchedStudent.get().getId()).isEqualTo(student.getId());
+    }
 
 }

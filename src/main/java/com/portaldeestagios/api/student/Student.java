@@ -17,6 +17,7 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @AllArgsConstructor
+@Builder
 public class Student implements Serializable {
 
   @Id

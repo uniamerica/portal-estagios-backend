@@ -7,6 +7,8 @@ import com.portaldeestagios.api.exception.UserNotFoundException;
 import com.portaldeestagios.api.user.ApplicationUser;
 import com.portaldeestagios.api.user.ApplicationUserRepository;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,13 @@ public class StudentService {
   private final ApplicationUserRepository applicationUserRepository;
   private final StudentRepository studentRepository;
   private final StudentDtoDisassembler studentDtoDisassembler;
+
+  @Autowired
+  public StudentService(StudentRepository studentRepository, ApplicationUserRepository applicationUserRepository, StudentDtoDisassembler studentDtoDisassembler) {
+    this.studentRepository = studentRepository;
+    this.applicationUserRepository = applicationUserRepository;
+    this.studentDtoDisassembler = studentDtoDisassembler;
+  }
 
   @Transactional
   public Student update(StudentInput studentInput, String email) {
