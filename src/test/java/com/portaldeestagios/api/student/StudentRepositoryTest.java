@@ -1,5 +1,6 @@
 package com.portaldeestagios.api.student;
 
+import com.portaldeestagios.api.user.ApplicationUserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ class StudentRepositoryTest {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private ApplicationUserRepository applicationUserRepository;
 
     @Test
     @DisplayName("Test if student is persisted correct")
@@ -59,8 +63,10 @@ class StudentRepositoryTest {
     @DisplayName("Test if student is find by Email correctly")
     void findStudentByApplicationUserEmail(){
         Student student = StudentFactory.studentWithUser();
-        this.studentRepository.save(student);
-        Optional<Student> searchedStudent = this.studentRepository.findByApplicationUserEmail(student.getApplicationUser().getEmail());
+        applicationUserRepository.save(student.getApplicationUser());
+
+        studentRepository.save(student);
+        Optional<Student> searchedStudent = studentRepository.findByApplicationUserEmail(student.getApplicationUser().getEmail());
 
         assertThat(searchedStudent).isNotNull();
         assertThat(searchedStudent.get().getId()).isEqualTo(student.getId());
