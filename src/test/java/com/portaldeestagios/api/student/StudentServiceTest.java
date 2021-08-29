@@ -25,7 +25,7 @@ public class StudentServiceTest {
     @InjectMocks
     private StudentService studentService;
 
-    @InjectMocks
+    @Mock
     private StudentDtoDisassembler studentDtoDisassembler;
 
     @Mock
@@ -48,27 +48,20 @@ public class StudentServiceTest {
     @DisplayName("must update a student")
     void mustUpdateStudent(){
         Student student = StudentFactory.studentWithUser();
+        Student studentUpdatedMock = StudentFactory.studentBuilderUpdated();
         when(studentRepository.findByApplicationUserEmail(student.getApplicationUser().getEmail()))
                 .thenReturn(Optional.ofNullable(student));
+        when(studentRepository.save(student)).thenReturn(studentUpdatedMock);
 
-        Student oldStudent = studentService.findByEmail(student.getApplicationUser().getEmail());
         StudentInput newStudent = StudentFactory.studentBuilderToBeUpdate();
 
-        Student studentUpdated = StudentFactory.studentBuilderUpdated();
-        when(studentRepository.save(oldStudent)).thenReturn(studentUpdated);
+        Student studentUpdated = studentService.update(newStudent, student.getApplicationUser().getEmail());
 
-        oldStudent.setFirstName(newStudent.getFirstName());
-        oldStudent.setLastName(newStudent.getLastName());
-        oldStudent.setAge(newStudent.getAge());
-        oldStudent.setPhoto(newStudent.getPhoto());
-
-        Student studentSaved = studentRepository.save(oldStudent);
-
-        assertThat(studentSaved.getFirstName()).isEqualTo(newStudent.getFirstName());
-        assertThat(studentSaved.getLastName()).isEqualTo(newStudent.getLastName());
-        assertThat(studentSaved.getAge()).isEqualTo(newStudent.getAge());
-        assertThat(studentSaved.getPhoto()).isEqualTo(newStudent.getPhoto());
-        assertThat(studentSaved.getId()).isEqualTo(oldStudent.getId());
+        assertThat(studentUpdated.getFirstName()).isEqualTo(newStudent.getFirstName());
+        assertThat(studentUpdated.getLastName()).isEqualTo(newStudent.getLastName());
+        assertThat(studentUpdated.getAge()).isEqualTo(newStudent.getAge());
+        assertThat(studentUpdated.getPhoto()).isEqualTo(newStudent.getPhoto());
+        assertThat(studentUpdated.getId()).isEqualTo(student.getId());
     }
 
     @Test
