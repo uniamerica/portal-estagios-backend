@@ -2,60 +2,67 @@ package com.portaldeestagios.api.selectionprocess;
 
 import com.portaldeestagios.api.email.SendEmailService;
 import com.portaldeestagios.api.exception.SelectionProcessNotFoundException;
-import com.portaldeestagios.api.student.Student;
 import com.portaldeestagios.api.student.StudentRepository;
-import com.portaldeestagios.api.user.ApplicationUser;
-import com.portaldeestagios.api.user.ApplicationUserRole;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashSet;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ContextConfiguration(classes = {SelectionProcessService.class})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class SelectionProcessServiceTest {
-  @MockBean
-  private SelectionProcessRepository selectionProcessRepository;
-
-  @Autowired
+  @InjectMocks
   private SelectionProcessService selectionProcessService;
 
-  @MockBean
+  @Mock
+  private SelectionProcessRepository selectionProcessRepository;
+
+  @Mock
   private SendEmailService sendEmailService;
 
-  @MockBean
+  @Mock
   private StudentRepository studentRepository;
 
-  @Test
-  public void findOrFailSelectionProcessWillSucceed_WhenSelectionProcessWasFound() {
-    SelectionProcessEntity selectionProcessEntity =
-            new SelectionProcessEntity(123L, "Dr", SelectionProcessStatusEnum.ABERTO, new HashSet<Student>());
+  public SelectionProcessEntity selectionProcessEntityFactory(){
+    SelectionProcessEntity selectionProcessEntity = SelectionProcessEntity.builder()
+            .id(1L)
+            .status(SelectionProcessStatusEnum.ABERTO)
+            .build();
 
-    when(selectionProcessRepository.findById(123L)).thenReturn(Optional.of(selectionProcessEntity));
-    assertSame(selectionProcessEntity, selectionProcessService.findOrFail(123L));
-    verify(selectionProcessRepository).findById((Long) any());
+    return selectionProcessEntity;
+  }
+
+
+  @Test
+  @DisplayName("must find one selection process by given id")
+  void shouldFindOneSelectionProcessById(){
+    SelectionProcessEntity selectionProcessEntity = selectionProcessEntityFactory();
+    Long id = 1L;
+
+    when(selectionProcessRepository.findByIdCustom(id)).thenReturn(Optional.of(selectionProcessEntity));
+
+    assertThat(selectionProcessService.find(1L).equals(selectionProcessEntity));
+    assertThat(selectionProcessService.find(1L)).isNotNull();
   }
 
   @Test
-  public void findOrFailWillFail_WhenSelectionProcessNotFound() {
-    given(selectionProcessRepository.findById(any())).willReturn(Optional.empty());
-    assertThatThrownBy(() -> selectionProcessService.findOrFail(123L))
-            .isInstanceOf(SelectionProcessNotFoundException.class);
-    verify(selectionProcessRepository).findById(any());
+  @DisplayName("must throw an exception when selection process not found")
+  void shouldThrowExceptionWhenFindOneSelectionProcessById(){
+    Long id = 1L;
+
+    when(selectionProcessRepository.findByIdCustom(id)).thenThrow(new SelectionProcessNotFoundException(id));
+
+    assertThrows(SelectionProcessNotFoundException.class, ()-> selectionProcessService.find(id));
   }
+
+
+
 }
 
