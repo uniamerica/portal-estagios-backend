@@ -4,7 +4,6 @@ import com.portaldeestagios.api.exception.UserNotFoundException;
 import com.portaldeestagios.api.student.Student;
 import com.portaldeestagios.api.student.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +17,6 @@ public class ApplicationUserService implements UserDetailsService {
   private final ApplicationUserRepository applicationUserRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final StudentRepository studentRepository;
-  //private final ConfirmationTokenService confirmationTokenService;
 
 
   @Autowired
@@ -28,8 +26,7 @@ public class ApplicationUserService implements UserDetailsService {
     this.studentRepository = studentRepository;
   }
 
-
-  @Override
+    @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
     return applicationUserRepository.findByEmail(email)
@@ -37,7 +34,7 @@ public class ApplicationUserService implements UserDetailsService {
   }
 
   @Transactional
-  public void signUpUser(ApplicationUser applicationUser) {
+  public ApplicationUser signUpUser(ApplicationUser applicationUser) {
 
     String encodedPassword = bCryptPasswordEncoder.encode(applicationUser.getPassword());
 
@@ -48,23 +45,8 @@ public class ApplicationUserService implements UserDetailsService {
     applicationUserRepository.save(applicationUser);
     studentRepository.save(student);
 
-
-//    String token = UUID.randomUUID().toString();
-//    ConfirmationToken confirmationToken = new ConfirmationToken(
-//            token,
-//            LocalDateTime.now(),
-//            LocalDateTime.now().plusMinutes(1),
-//            appUser
-//    );
-//
-//    confirmationTokenService.saveConfirmationToken(confirmationToken);
-
-
+    return applicationUser;
   }
-
-//  public int enableAppUser(String email) {
-//    return applicationUserRepository.enableAppUser(email);
-//  }
 
   public ApplicationUser findOrFail(Long userId) {
     return applicationUserRepository.findById(userId)
