@@ -41,6 +41,8 @@ class RegistrationServiceTest {
             ApplicationUserRole.valueOf(role.toUpperCase()
             ));
 
+    registrationService.register(request, role);
+
     assertEquals("ROLE_STUDENT", user.getApplicationUserRole().toString());
     verify(applicationUserService, times(1)).signUpUser(user);
   }
