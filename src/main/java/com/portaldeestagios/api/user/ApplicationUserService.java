@@ -26,7 +26,7 @@ public class ApplicationUserService implements UserDetailsService {
     this.studentRepository = studentRepository;
   }
 
-    @Override
+  @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
     return applicationUserRepository.findByEmail(email)

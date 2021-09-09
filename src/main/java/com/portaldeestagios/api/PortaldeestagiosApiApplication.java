@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties(JwtConfig.class)
+@EnableConfigurationProperties
 public class PortaldeestagiosApiApplication {
 
   public static void main(String[] args) {

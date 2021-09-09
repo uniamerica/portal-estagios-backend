@@ -1,15 +1,15 @@
 package com.portaldeestagios.api.configs;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 @Setter
 @Getter
-@Component
-@ConfigurationProperties("algafood.email")
+@Configuration
+@ConfigurationProperties("portal.email")
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class EmailProperties {
   private String remetente;

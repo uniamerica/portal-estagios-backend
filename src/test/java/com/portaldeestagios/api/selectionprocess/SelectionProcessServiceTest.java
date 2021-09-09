@@ -24,12 +24,6 @@ public class SelectionProcessServiceTest {
   @Mock
   private SelectionProcessRepository selectionProcessRepository;
 
-  @Mock
-  private SendEmailService sendEmailService;
-
-  @Mock
-  private StudentRepository studentRepository;
-
   public SelectionProcessEntity selectionProcessEntityFactory(){
     SelectionProcessEntity selectionProcessEntity = SelectionProcessEntity.builder()
             .id(1L)

@@ -8,15 +8,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.internet.MimeMessage;
 
-import static com.portaldeestagios.api.email.SendEmailService.*;
+import static com.portaldeestagios.api.email.SendEmailService.Mensagem;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class SmtpSendEmailServiceTest {
+class SmtpSendEmailServiceTest {
 
         @InjectMocks
         private SmtpSendEmailService smtpSendEmailService;
@@ -30,27 +29,22 @@ public class SmtpSendEmailServiceTest {
         @Mock
         private MimeMessage mimeMessage;
 
-        @Mock
-        private MimeMessageHelper mimeMessageHelper;
-
         public Mensagem mensagem() {
-                Mensagem mensagem = Mensagem.builder()
+                return Mensagem.builder()
                         .destinatario("destinatario@gmail.com")
                         .corpo("teste de envio de email")
                         .assunto("email a ser enviado.")
                         .build();
-                return mensagem;
         }
 
         public EmailProperties emailProperties() {
-                EmailProperties emailProperties = EmailProperties.builder()
+                return EmailProperties.builder()
                         .remetente("remetente@gmail.com")
                         .build();
-                return emailProperties;
         }
 
         @Test
-        public void deveEnviarEmail(){
+        void deveEnviarEmail(){
                 when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
                 when(emailProperties.getRemetente()).thenReturn("remetente@gmail.com");
                 doNothing().when(mailSender).send(mimeMessage);
@@ -61,10 +55,17 @@ public class SmtpSendEmailServiceTest {
         }
 
         @Test
-        public void naoDeveEnviarEmailQuandoORemetenteForVazio(){
+        void naoDeveEnviarEmailQuandoORemetenteForVazio(){
+
+                Mensagem mensagem = Mensagem.builder()
+                        .destinatario("destinatario@gmail.com")
+                        .corpo("teste de envio de email")
+                        .assunto("email a ser enviado.")
+                        .build();
+
                 when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
                 when(emailProperties.getRemetente()).thenReturn("");
 
-                Assertions.assertThrows(EmailException.class, () -> smtpSendEmailService.send(mensagem()));
+                Assertions.assertThrows(EmailException.class, () -> smtpSendEmailService.send(mensagem));
         }
 }
