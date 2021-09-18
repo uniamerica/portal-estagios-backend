@@ -1,0 +1,38 @@
+image: gitlab/dind
+services:
+  - docker:dind
+
+varibles:
+  DOCKER_DRIVER: overlay
+  SPRING_PROFILES_ACTIVE: gitlab-ci
+  USER_GITLAB: brunolivrosbbs07
+  APP_NAME: portaldeestagios-api
+  REPO: testeci
+
+stages:
+  - build
+  - test
+  - docker
+
+maven-build:
+  image: maven:3-jdk-8
+  stage: build
+  script: "mvn clean package -B"
+  artifacts:
+    paths:
+      - target/*.jar
+
+maven-test:
+  image: maven:3-jdk-8
+  stage: test
+  script: "mvn test"
+  artifacts:
+    paths:
+      - target/*.jar
+
+docker-build:
+  stage: docker
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t registry.gitlab.com/brunolivrosbbs07/testeci .
+    - docker push registry.gitlab.com/brunolivrosbbs07/testeci
