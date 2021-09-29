@@ -3,7 +3,7 @@ package com.portaldeestagios.api.selectionprocess;
 import com.portaldeestagios.api.dtos.model.selectionprocess.SelectionProcessListDto;
 import com.portaldeestagios.api.dtos.assembler.selectionProcess.SelectionProcessDtoAssembler;
 import com.portaldeestagios.api.dtos.assembler.selectionProcess.SelectionProcessDtoDisassembler;
-import com.portaldeestagios.api.dtos.inputDto.selectionprocess.InputSelectionProcess;
+import com.portaldeestagios.api.dtos.inputdto.selectionprocess.InputSelectionProcess;
 import com.portaldeestagios.api.dtos.model.selectionprocess.SelectionProcessDto;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;

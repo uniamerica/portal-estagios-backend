@@ -1,11 +1,10 @@
 package com.portaldeestagios.api.student;
 
 import com.portaldeestagios.api.dtos.assembler.student.StudentProfileDtoAssembler;
-import com.portaldeestagios.api.dtos.model.student.StudentDto;
 import com.portaldeestagios.api.dtos.model.student.StudentListDto;
 import com.portaldeestagios.api.dtos.assembler.student.StudentDtoAssembler;
 import com.portaldeestagios.api.dtos.assembler.student.StudentDtoDisassembler;
-import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
+import com.portaldeestagios.api.dtos.inputdto.student.StudentInput;
 import com.portaldeestagios.api.dtos.model.student.StudentProfileDto;
 import com.portaldeestagios.api.dtos.model.student.StudentTokenDto;
 import lombok.AllArgsConstructor;

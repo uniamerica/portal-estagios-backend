@@ -1,13 +1,10 @@
 package com.portaldeestagios.api.student;
 
 import com.portaldeestagios.api.dtos.assembler.student.StudentDtoDisassembler;
-import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
-import com.portaldeestagios.api.exception.NegocioException;
+import com.portaldeestagios.api.dtos.inputdto.student.StudentInput;
 import com.portaldeestagios.api.exception.UserNotFoundException;
-import com.portaldeestagios.api.user.ApplicationUser;
 import com.portaldeestagios.api.user.ApplicationUserRepository;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

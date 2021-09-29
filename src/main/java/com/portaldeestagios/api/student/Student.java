@@ -33,6 +33,8 @@ public class Student implements Serializable {
 
   private String photo;
 
+  private String cpf;
+
   @OneToOne
   @JoinColumn(unique = true)
   private ApplicationUser applicationUser;

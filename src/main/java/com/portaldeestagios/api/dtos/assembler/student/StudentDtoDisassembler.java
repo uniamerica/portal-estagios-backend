@@ -1,6 +1,6 @@
 package com.portaldeestagios.api.dtos.assembler.student;
 
-import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
+import com.portaldeestagios.api.dtos.inputdto.student.StudentInput;
 import com.portaldeestagios.api.student.Student;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

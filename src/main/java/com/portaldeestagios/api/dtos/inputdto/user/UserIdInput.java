@@ -1,4 +1,4 @@
-package com.portaldeestagios.api.dtos.inputDto.user;
+package com.portaldeestagios.api.dtos.inputdto.user;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.portaldeestagios.api.student;
 
 import com.portaldeestagios.api.dtos.assembler.student.StudentDtoDisassembler;
-import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
+import com.portaldeestagios.api.dtos.inputdto.student.StudentInput;
 import com.portaldeestagios.api.exception.UserNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

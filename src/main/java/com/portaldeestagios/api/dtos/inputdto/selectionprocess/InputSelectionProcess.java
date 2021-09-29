@@ -1,4 +1,4 @@
-package com.portaldeestagios.api.dtos.inputDto.selectionprocess;
+package com.portaldeestagios.api.dtos.inputdto.selectionprocess;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

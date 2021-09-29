@@ -1,4 +1,4 @@
-package com.portaldeestagios.api.dtos.inputDto.student;
+package com.portaldeestagios.api.dtos.inputdto.student;
 
 import lombok.*;
 

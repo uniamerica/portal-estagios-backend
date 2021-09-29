@@ -1,6 +1,6 @@
 package com.portaldeestagios.api.student;
 
-import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
+import com.portaldeestagios.api.dtos.inputdto.student.StudentInput;
 import com.portaldeestagios.api.user.ApplicationUser;
 import com.portaldeestagios.api.user.ApplicationUserRole;
 
