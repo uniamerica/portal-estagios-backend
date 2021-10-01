@@ -40,9 +40,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final JwtConfig jwtConfig;
   private final JwtUtils jwtUtils;
 
+  private static final String[] AUTH_WHITELIST = {
+          "/v2/api-docs",
+          "/swagger-resources",
+          "/swagger-resources/**",
+          "/configuration/ui",
+          "/configuration/security",
+          "/swagger-ui.html",
+          "/webjars/**",
+  };
+
+
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-
     http
             .cors().and().csrf().disable()
             .sessionManagement()
@@ -51,21 +62,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .headers().frameOptions().disable()
             .and()
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET,
-                    "/",
-                    "/h2-console/**",
-                    "index",
-                    "/error",
-                    "/css/*",
-                    "/js/*",
-                    "/login",
-                    "/courses",
-                    "/registration/**",
-                    "/selection-process",
-                    "/selection-process/**",
-                    "/swagger-ui/**").permitAll()
+            .antMatchers(AUTH_WHITELIST).permitAll()
             .antMatchers(HttpMethod.POST,
-            "/registration/**").permitAll()
+            "/registration/**",
+                    "/login").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, jwtUtils))
@@ -79,16 +79,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  public void configure(WebSecurity web) {
+  public void configure(WebSecurity web) throws Exception {
     web.ignoring().antMatchers("/v2/api-docs",
-            "/configuration/ui",
             "/swagger-resources/**",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            "/api/v1/selection-process",
-            "/api/v1/selection-process/**");
+            "/swagger-ui/**"
+            );
   }
+
   @Override
   protected void configure(AuthenticationManagerBuilder auth)  {
     auth.authenticationProvider(daoAuthenticationProvider());
