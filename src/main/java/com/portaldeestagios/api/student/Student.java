@@ -41,7 +41,7 @@ public class Student implements Serializable {
   private Set<SelectionProcessEntity> selectionProcessEntityList = new HashSet<>();
 
 
-  @Builder
+//  @Builder
   public Student(Long id, String firstName, String lastName, Byte age) {
     this.id = id;
     this.firstName = firstName;
