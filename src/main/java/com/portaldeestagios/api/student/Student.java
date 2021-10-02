@@ -33,6 +33,7 @@ public class Student implements Serializable {
 
   private String photo;
 
+  @Column(unique = true)
   private String cpf;
 
   @OneToOne
@@ -40,7 +41,7 @@ public class Student implements Serializable {
   private ApplicationUser applicationUser;
 
   @ManyToMany(mappedBy = "studentList")
-  private Set<SelectionProcessEntity> selectionProcessEntityList = new HashSet<>();
+  private transient Set<SelectionProcessEntity> selectionProcessEntityList = new HashSet<>();
 
 
   @Builder

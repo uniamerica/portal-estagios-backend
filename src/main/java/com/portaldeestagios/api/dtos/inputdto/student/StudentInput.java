@@ -1,6 +1,7 @@
 package com.portaldeestagios.api.dtos.inputdto.student;
 
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Getter
 @Setter
@@ -11,5 +12,8 @@ public class StudentInput {
   private String lastName;
   private Byte age;
   private String photo;
+
+  @CPF
+  private String cpf;
 
 }

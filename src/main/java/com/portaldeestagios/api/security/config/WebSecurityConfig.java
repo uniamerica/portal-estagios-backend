@@ -1,7 +1,5 @@
 package com.portaldeestagios.api.security.config;
 
-import com.portaldeestagios.api.customhandlers.CustomAccessDeniedHandler;
-import com.portaldeestagios.api.customhandlers.CustomAuthenticationEntryPoint;
 import com.portaldeestagios.api.security.jwt.JwtConfig;
 import com.portaldeestagios.api.security.jwt.JwtTokenVerifier;
 import com.portaldeestagios.api.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
@@ -41,6 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final JwtUtils jwtUtils;
 
   private static final String[] AUTH_WHITELIST = {
+          "/h2-console/**",
           "/v2/api-docs",
           "/swagger-resources",
           "/swagger-resources/**",
@@ -57,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http
             .cors().and().csrf().disable()
             .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+              .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .headers().frameOptions().disable()
             .and()
@@ -68,14 +67,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/login").permitAll()
             .anyRequest().authenticated()
             .and()
-            .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, jwtUtils))
-            .addFilterBefore(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
-            .formLogin()
-            .loginPage("/login")
-            .and()
-            .exceptionHandling()
-            .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-            .accessDeniedHandler(new CustomAccessDeniedHandler());
+            .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, jwtUtils))
+            .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class);
   }
 
   @Override

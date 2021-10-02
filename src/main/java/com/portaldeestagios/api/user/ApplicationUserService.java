@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ApplicationUserService implements UserDetailsService {
-  private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
   private final ApplicationUserRepository applicationUserRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final StudentRepository studentRepository;
