@@ -252,6 +252,26 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             new HttpHeaders(), status, request);
 
   }
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<Object> handleResourceNotFoundException(
+          ResourceNotFoundException ex, WebRequest request) {
+
+    HttpStatus status = HttpStatus.NOT_FOUND;
+    var problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
+    String detail = ex.getMessage();
+
+
+    var problem =
+            createProblemBuilder(status, problemType, detail)
+                    .userMessage(detail)
+                    .build();
+
+    return handleExceptionInternal(ex, problem,
+            new HttpHeaders(), status, request);
+
+  }
+
 //
 //  @ExceptionHandler(EntidadeEmUsoException.class)
 //  public ResponseEntity<?> handleEntidadeEmUso(EntidadeEmUsoException ex, WebRequest request) {
