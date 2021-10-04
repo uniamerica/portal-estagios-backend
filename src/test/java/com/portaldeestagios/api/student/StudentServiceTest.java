@@ -1,6 +1,5 @@
 package com.portaldeestagios.api.student;
 
-import com.portaldeestagios.api.dtos.assembler.student.StudentDtoDisassembler;
 import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
 import com.portaldeestagios.api.exception.UserNotFoundException;
 import org.junit.jupiter.api.DisplayName;
@@ -20,13 +19,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
 
-    private Student student;
-
     @InjectMocks
     private StudentService studentService;
-
-    @Mock
-    private StudentDtoDisassembler studentDtoDisassembler;
 
     @Mock
     private StudentRepository studentRepository;
