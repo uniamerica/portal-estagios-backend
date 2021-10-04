@@ -4,17 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
 import com.portaldeestagios.api.dtos.model.student.StudentListDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.web.JsonPath;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -38,6 +42,8 @@ class StudentIntegrationTest {
 
     private static final String STUDENT = "thaina@gmail.com";
 
+    private static final String STUDENT2 = "bruno@gmail.com";
+
     void login(String username) throws Exception {
         studentInput = StudentFactory.studentBuilderToBeUpdate();
         MvcResult signIn = mockMvc
@@ -58,40 +64,38 @@ class StudentIntegrationTest {
                         .contentType(APPLICATION_JSON)
                         .header("Authorization", jwt))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value("Thainá"));
     }
 
     @Test
     void mustFindAnStudentByItsTokenProfile() throws Exception {
-        login(STUDENT);
+        login(STUDENT2);
         mockMvc
                 .perform(get("/students/profile")
                 .header("Authorization", jwt))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value("Bruno"));
     }
 
     @Test
     void mustFindAnStudentByItsToken() throws Exception {
-        login(STUDENT);
+        login(STUDENT2);
         mockMvc
                 .perform(get("/students/token")
                 .header("Authorization", jwt))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value("Bruno"));
     }
 
     @Test
     void mustReturnAllStudents() throws Exception {
         login(ADMIN);
-        var resultGet = mockMvc.perform(get("/students/")
+        mockMvc.perform(get("/students/")
                 .header("Authorization", jwt))
-                .andExpect(status().isOk()).andReturn();
-
-        String json = resultGet.getResponse().getContentAsString();
-
-        StudentListDto[] object = objectMapper.readValue(json, StudentListDto[].class);
-
-        assertEquals(5, object.length);
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(5)));
     }
 }
