@@ -1,5 +1,6 @@
 package com.portaldeestagios.api.student;
 
+import com.portaldeestagios.api.dtos.assembler.student.StudentDtoDisassembler;
 import com.portaldeestagios.api.dtos.inputDto.student.StudentInput;
 import com.portaldeestagios.api.exception.UserNotFoundException;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +25,9 @@ public class StudentServiceTest {
 
     @Mock
     private StudentRepository studentRepository;
+
+    @Mock
+    private StudentDtoDisassembler studentDtoDisassembler;
 
     @Test
     @DisplayName("must find a student when a given email is provided")
