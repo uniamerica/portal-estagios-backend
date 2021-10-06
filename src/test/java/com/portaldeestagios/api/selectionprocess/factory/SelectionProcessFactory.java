@@ -12,4 +12,16 @@ public class SelectionProcessFactory {
                 .status(SelectionProcessStatusEnum.ABERTO)
                 .build();
     }
+
+    public static SelectionProcessEntity buildWithoutTitle(){
+        return SelectionProcessEntity.builder()
+                .companyName("Prancing Pony")
+                .build();
+    }
+
+    public static SelectionProcessEntity buildWithoutCompanyName(){
+        return SelectionProcessEntity.builder()
+                .title("The Fellowship of the Ring")
+                .build();
+    }
 }
