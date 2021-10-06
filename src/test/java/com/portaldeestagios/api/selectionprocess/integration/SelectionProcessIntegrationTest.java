@@ -6,6 +6,7 @@ import com.portaldeestagios.api.selectionprocess.SelectionProcessController;
 import com.portaldeestagios.api.selectionprocess.SelectionProcessRepository;
 import com.portaldeestagios.api.selectionprocess.SelectionProcessStatusEnum;
 import com.portaldeestagios.api.selectionprocess.factory.SelectionProcessFactory;
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -30,9 +31,13 @@ public class SelectionProcessIntegrationTest extends IntegrationTestConfig {
     private SelectionProcessRepository selectionProcessRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private Flyway flyway;
 
     @BeforeEach
     void setUp(){
+        flyway.clean();
+        flyway.migrate();
          inputSelectionProcess = modelMapper.map(SelectionProcessFactory.buildDefautlWithoutId(),
                  InputSelectionProcess.class);
     }

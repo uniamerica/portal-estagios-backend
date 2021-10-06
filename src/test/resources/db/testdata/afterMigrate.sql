@@ -1,3 +1,11 @@
+delete from selection_process_student;
+
+delete from selection_process;
+
+delete from student;
+
+delete from application_user;
+
 insert into application_user
 (id, application_user_role, email, is_account_non_expired, is_account_non_locked, is_credentials_non_expired, is_enabled,
  password)
