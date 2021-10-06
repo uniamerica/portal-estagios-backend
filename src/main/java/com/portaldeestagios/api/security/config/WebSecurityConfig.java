@@ -87,7 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui.html",
             "/webjars/**",
             "/api/v1/selection-process",
-            "/api/v1/selection-process/**");
+            "/api/v1/selection-process/**",
+            "/h2-console/**");
   }
   @Override
   protected void configure(AuthenticationManagerBuilder auth)  {

@@ -11,7 +11,8 @@ public enum ProblemType {
   MENSAGEM_INCOMPREENSIVEL("/mensagem-incompreensivel", "Mensagem incompreensível"),
   ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso"),
   ERRO_NEGOCIO("/erro-negocio", "Violação de regra de negócio"),
-  CONFLITO("/conflito", "Já um existe um cadastro");
+  CONFLITO("/conflito", "Já um existe um cadastro"),
+  ACESSO_NEGADO("/acesso-negado", "Acesso negado");
 
   private final String title;
   private final String uri;

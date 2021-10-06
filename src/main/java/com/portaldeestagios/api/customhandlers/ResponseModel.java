@@ -39,4 +39,20 @@ public class ResponseModel {
     mapper.writeValue(out, data);
     out.flush();
   }
+
+  static void unauthorized(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+
+    ResponseModel data = new ResponseModel(
+            OffsetDateTime.now().toString(),
+            HttpStatus.UNAUTHORIZED.value(),
+            "Unauthorized",
+            request.getRequestURL().toString());
+
+
+    OutputStream out = response.getOutputStream();
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValue(out, data);
+    out.flush();
+  }
 }

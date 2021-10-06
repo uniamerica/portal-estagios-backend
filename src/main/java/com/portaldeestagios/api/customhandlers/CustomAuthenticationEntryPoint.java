@@ -15,6 +15,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                        HttpServletResponse response,
                        AuthenticationException e) throws IOException {
 
-    ResponseModel.customExceptionHandling(request, response);
+    ResponseModel.unauthorized(request, response);
   }
 }
