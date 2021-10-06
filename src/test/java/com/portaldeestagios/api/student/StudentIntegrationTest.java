@@ -100,4 +100,19 @@ class StudentIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*", hasSize(5)));
     }
+
+    @Test
+    void deveLancarExcessaoForbbidenQuandoUsuarioAutenticadoNaoTiverPermissaoParaBuscarEstudantes() throws Exception {
+        login(STUDENT);
+        mockMvc.perform(get("/students/")
+                        .header("Authorization", jwt))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void deveLancarExcessaoUnauthorizedQuandoUsuarioNaoAutenticadoNaoTiverPermissaoParaBuscarEstudantes() throws Exception {
+        login(STUDENT);
+        mockMvc.perform(get("/students/"))
+                .andExpect(status().isUnauthorized());
+    }
 }
