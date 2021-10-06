@@ -3,6 +3,7 @@ package com.portaldeestagios.api.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portaldeestagios.api.IntegrationTestConfig;
 import com.portaldeestagios.api.registration.RegistrationRequest;
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,15 @@ public class UserIT extends IntegrationTestConfig {
             throw new RuntimeException(e);
         }
     }
+
     @Autowired
-    private Flyway
+    private Flyway flyway;
 
     @BeforeEach
+    void setup() {
+        flyway.clean();
+        flyway.migrate();
+    }
 
     @Test
     void mustCreateUserAndReturnSuccess() throws Exception {
@@ -59,5 +65,19 @@ public class UserIT extends IntegrationTestConfig {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
+    }
+
+    @Test
+    void mustCreateUserAndReturnInternalServerError() throws Exception {
+        var registration = new RegistrationRequest();
+        registration.setEmail("mi@gmail.com");
+        registration.setPassword("senha");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/registration/admin")
+                        .content(asJsonString(registration))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError());
     }
 }
