@@ -1,5 +1,6 @@
 package com.portaldeestagios.api.registration;
 
+import com.portaldeestagios.api.user.ApplicationUser;
 import com.portaldeestagios.api.user.ApplicationUserRole;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
@@ -18,15 +19,13 @@ public class RegistrationController {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/{role}")
-  public String register(@RequestBody RegistrationRequest request, @PathVariable String role) {
+  public ApplicationUser register(@RequestBody RegistrationRequest request, @PathVariable String role) {
     role = "ROLE_"+role;
     if(!EnumUtils.isValidEnumIgnoreCase(ApplicationUserRole.class, role) ||
             role.equalsIgnoreCase("role_admin")) {
       throw new IllegalStateException("Invalid path");
     }
-    registrationService.register(request, role);
-
-    return "Cadastro efetuado com sucesso";
+    return registrationService.register(request, role);
   }
 
 //  @GetMapping(path = "confirm")
